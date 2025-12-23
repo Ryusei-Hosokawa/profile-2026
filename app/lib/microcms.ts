@@ -1,20 +1,25 @@
 import { createClient } from 'microcms-js-sdk';
 
-if (!import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN) {
-  throw new Error('VITE_MICROCMS_SERVICE_DOMAIN is required');
-}
-
-if (!import.meta.env.VITE_MICROCMS_API_KEY) {
-  throw new Error('VITE_MICROCMS_API_KEY is required');
-}
+const serviceDomain = import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN;
+const apiKey = import.meta.env.VITE_MICROCMS_API_KEY;
 
 export const client = createClient({
-  serviceDomain: import.meta.env.VITE_MICROCMS_SERVICE_DOMAIN,
-  apiKey: import.meta.env.VITE_MICROCMS_API_KEY,
+  serviceDomain: serviceDomain || '',
+  apiKey: apiKey || '',
 });
+
+function checkEnvVars() {
+  if (!serviceDomain) {
+    throw new Error('VITE_MICROCMS_SERVICE_DOMAIN is required');
+  }
+  if (!apiKey) {
+    throw new Error('VITE_MICROCMS_API_KEY is required');
+  }
+}
 
 // ポートフォリオ一覧取得
 export async function getPortfolioList() {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'portfolio',
     queries: {
@@ -27,6 +32,7 @@ export async function getPortfolioList() {
 
 // ポートフォリオ詳細取得
 export async function getPortfolioBySlug(slug: string) {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'portfolio',
     queries: {
@@ -38,6 +44,7 @@ export async function getPortfolioBySlug(slug: string) {
 
 // ブログ一覧取得
 export async function getBlogList() {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'blog',
     queries: {
@@ -50,6 +57,7 @@ export async function getBlogList() {
 
 // ブログ詳細取得
 export async function getBlogBySlug(slug: string) {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'blog',
     queries: {
@@ -61,6 +69,7 @@ export async function getBlogBySlug(slug: string) {
 
 // About情報取得
 export async function getAbout() {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'about',
   });
@@ -69,6 +78,7 @@ export async function getAbout() {
 
 // Skills情報取得
 export async function getSkills() {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'skills',
   });
@@ -77,6 +87,7 @@ export async function getSkills() {
 
 // Career情報取得
 export async function getCareer() {
+  checkEnvVars();
   const data = await client.get({
     endpoint: 'career',
   });
